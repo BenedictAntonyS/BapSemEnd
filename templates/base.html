@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Flask App</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                {% if 'user_id' in session %}
+                
+                    {% if session['is_admin'] %}
+                        <a href="{{ url_for('admin_home') }}">Home</a>
+                    {% else %}
+                        <a href="{{ url_for('user_home') }}">Home</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                {% endif %}
+            </li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            {% if not session['is_admin'] %}
+                <li><a href="{{ url_for('products') }}">Products</a></li>
+            {% endif %}
+            <!-- Add more links here as needed -->
+            {% if 'user_id' in session %}
+                {% if session['is_admin'] %}
+                    <li><a href="{{ url_for('add_product') }}">Add Product</a></li>
+                    
+                {% else %}
+                    <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

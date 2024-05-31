@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Your Cart</h2>
+<ul>
+    {% for item in cart_items %}
+        <li>
+            {% if item.image %}
+                <img src="{{ url_for('static', filename='images/'+item.image) }}" alt="{{ item.name }}" style="width: 100px;">
+            {% else %}
+                <!-- Placeholder image or text if no image is available -->
+                No Image Available
+            {% endif %}
+            <div>
+                <p><strong>Name:</strong> {{ item.name }}</p>
+                <p><strong>Category:</strong> {{ item.category }}</p>
+                <p><strong>Price:</strong> ${{ item.price }}</p>
+                <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                <p><strong>Total:</strong> ${{ item.price * item.quantity }}</p>
+            </div>
+            <form action="{{ url_for('remove_from_cart', product_id=item.id) }}" method="post" style="display:inline;">
+                <button type="submit">Remove</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+<p>Total: ${{ total }}</p>
+{% endblock %}
